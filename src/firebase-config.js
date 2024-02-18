@@ -6,15 +6,16 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDoDiM3IqQkqLiE0CWuzxjAriOKDm_3wy0",
-  authDomain: "chatapplication-c0ec8.firebaseapp.com",
-  projectId: "chatapplication-c0ec8",
-  storageBucket: "chatapplication-c0ec8.appspot.com",
-  messagingSenderId: "922511741836",
-  appId: "1:922511741836:web:e486ee63eab0295ac9bca9"
+  apiKey: "AIzaSyDjWPfqD9x3bkvuS2f1YRvoQM7MIC-L_Y0",
+  authDomain: "chatapp-b42e6.firebaseapp.com",
+  projectId: "chatapp-b42e6",
+  storageBucket: "chatapp-b42e6.appspot.com",
+  messagingSenderId: "388279274156",
+  appId: "1:388279274156:web:534ebe25b5e5f4b09d2d09"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+export default app;
