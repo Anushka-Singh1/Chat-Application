@@ -20,7 +20,7 @@ function App() {
 return (
   <div>
     {room ? (
-      <ChatRoom/> ) : (
+      <ChatRoom room={room}/> ) : (
         <RoomInput setRoom={setRoom} /> //passing setRoom as a prop to RoomInput component so that we can change the state of room from RoomInput component
     )}
   </div>
