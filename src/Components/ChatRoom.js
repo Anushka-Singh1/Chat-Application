@@ -1,12 +1,25 @@
 import React from 'react'
-import {useState} from 'react';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {useState, useEffect} from 'react';
+import { addDoc, collection, onSnapshot, serverTimestamp,where,query, or, orderBy } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 
 function ChatRoom(props) {
   const {room}=props;
   const [newMessage, setNewMessage]=useState("");
   const messagesRef=collection(db, 'messages')
+  const [messages, setMessages]=useState([]);
+  
+  useEffect(() => {
+    const queryMessages=query(messagesRef,where("room","==",room, orderBy("crearedAt")));
+    const unsuscribe=onSnapshot(queryMessages,(snapshot)=>{
+    let messages=[];
+     snapshot.forEach((doc)=>{
+        messages.push({...doc.data(),id: doc.id});
+      });
+      setMessages(messages);
+    });
+    return ()=>unsuscribe();
+  }, []);
   const handleSubmit= async (e)=>{
     e.preventDefault();
     if(newMessage==="") return;
@@ -20,7 +33,18 @@ function ChatRoom(props) {
     setNewMessage("");
     };
   return (
-  <div className='chat-room bg-orange-100 h-screen flex flex-col justify-end'>
+<div className='chat-room bg-orange-100 text-black h-screen flex flex-col'>
+  <div className='header bg-orange-200 h-8  flex justify-center items-center'>
+    <h1 className="font-bold">Welcome to: {room.toUpperCase()}</h1>
+  </div>
+  <div className='messages'>
+    {messages.map((msg) => (
+      <div className='msg' key={msg.id}>
+      <span className='user font-bold'>{msg.user}</span>
+      {msg.text}
+      </div>
+    ))}
+  </div>
   <div className="fixed bottom-0 w-full bg-gray-100 p-4">
     <form onSubmit={handleSubmit} className='new-message-form flex items-center'>
       <input
@@ -36,6 +60,7 @@ function ChatRoom(props) {
     </form>
   </div>
 </div>
+
   )
 }
 
